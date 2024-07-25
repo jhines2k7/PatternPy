@@ -3,7 +3,7 @@ import numpy as np
 
 
 def detect_head_shoulder(df, window=3):
-# Define the rolling window
+    # Define the rolling window
     roll_window = window
     # Create a rolling window for High and Low
     df['high_roll_max'] = df['High'].rolling(window=roll_window).max()
@@ -14,10 +14,10 @@ def detect_head_shoulder(df, window=3):
     mask_inv_head_shoulder = ((df['low_roll_min'] < df['Low'].shift(1)) & (df['low_roll_min'] < df['Low'].shift(-1)) & (df['Low'] > df['Low'].shift(1)) & (df['Low'] > df['Low'].shift(-1)))
     # Create a new column for Head and Shoulder and its inverse pattern and populate it using the boolean masks
     df['head_shoulder_pattern'] = np.nan
+    df['head_shoulder_pattern'] = df['head_shoulder_pattern'].astype(object)
     df.loc[mask_head_shoulder, 'head_shoulder_pattern'] = 'Head and Shoulder'
     df.loc[mask_inv_head_shoulder, 'head_shoulder_pattern'] = 'Inverse Head and Shoulder'
-    return df 
-    # return not df['head_shoulder_pattern'].isna().any().item()
+    return df
 
 def detect_multiple_tops_bottoms(df, window=3):
 # Define the rolling window
